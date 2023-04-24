@@ -1,15 +1,77 @@
-package com.formacaoandroidstudio.fragments;
+package com.formacaoandroidstudio.fragments.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import com.formacaoandroidstudio.fragments.R;
+import com.formacaoandroidstudio.fragments.fragment.ContatosFragment;
+import com.formacaoandroidstudio.fragments.fragment.ConversasFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Button buttonConversa, buttonContato;
+
+    // Criando objeto Fragment
+    private ConversasFragment conversaFragment;
+    private ContatosFragment contatosFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Capturando os ids dos componentes do button
+        buttonContato = findViewById(R.id.buttonContatos);
+        buttonConversa = findViewById(R.id.buttonConversas);
+
+        // Remover sombra do ActionBar
+        getSupportActionBar().setElevation(0);
+
+        // Instanciando o Fragment
+        conversaFragment = new ConversasFragment();
+
+        // Configurar objeto para o fragmento - começa a transação
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Vamos adicionar o transaction que recebe dois parâmetros:
+        // 1 - id do componente frame onde vai ser adicionado o fragment | 2 - Fragmento que você quer exibir
+        transaction.add(R.id.frameConteudo, conversaFragment);
+
+        // Comita a transação - encerra a transação
+        transaction.commit();
+
+        // Evento ao clicar o botão de contato
+        buttonContato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                contatosFragment = new ContatosFragment();
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                // Vamos fazer um replace (que add ou substitui o fragment)
+                transaction.replace(R.id.frameConteudo, contatosFragment);
+                transaction.commit();
+            }
+        });
+
+        // Evento ao clicar o botão de conversa
+        buttonConversa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                conversaFragment = new ConversasFragment();
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frameConteudo, conversaFragment);
+                transaction.commit();
+            }
+        });
+
     }
 }
 
@@ -104,5 +166,8 @@ Há também algumas subclasses que você pode querer estender em vez da classe F
       Exibe uma hierarquia de objetos Preference como uma lista. Isso é usado para criar uma tela de configurações para seu aplicativo.
 
 Fonte: https://developer.android.com/guide/components/fragments?hl=pt-br
-
+*
+* Para criar um fragment:
+* Com o botão direito do mouse em cima do pacote vai em:
+* new > Fragment > Fragment (Blank) [Existe várias opções de fragmets] > Fragment Nome
 * */
